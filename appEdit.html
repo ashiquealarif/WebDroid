@@ -1,0 +1,316 @@
+<html>
+<head>
+<title>Smart Android</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="http://localhost/cb/kkk/project/css/CssFile2.css">
+</head>
+
+<body onLoad="getParent();loadPageNames();">
+
+<h1>Let's Design App !
+<button onClick="window.open('http://localhost/cb/kkk/project/dashBoard.html','_self')" style="float:right;height:6%;width:10%; margin-right:0.5%;background-color: #e60000;border: none;color: white;">Go Back</button>
+</h1>
+<img src="../../../1 copy.png" width="51%" style="margin-left:50%;" height="89.5%" >
+<iframe id="iframe" style="float:right; margin-right:-1%; margin-top:-37%" height="78.5%" width="49%" src="index.html"></iframe>
+
+<div style="margin-top:-42%;">
+
+<h2>Add New Page</h2>
+<input type="text" id="newPage" name="" placeholder="New Page Name">&nbsp;<button id="addPageBtn" onClick="getParent();addPage();">Add Page</button>
+<h2>Select Page to Edit: </h2>
+<select id="page" ></select>&nbsp;<button id="loadBtn" onClick="loadPage()">Load</button>
+
+<h2 id="h2">Edit Page</h2>
+<p>Hold mouse pointer over an element to know it's Id(!!Case Sensitive)</p>
+<div>
+	<input type="text" name="search" id="search" placeholder="search with id">&nbsp;<button id="aa" onClick="searchElement()">Select Item</button>
+</div>
+<div id="changeElements" style="visibility: hidden;">
+	
+</div> 
+
+<form id="form1" method="post" action="http://localhost/cb/kkk/project/php/generate.php">
+
+<!--<input type="hidden" name="appGmail" id="GmailId"/>
+<input type="hidden" name="appTitle" id="appId"/>
+<input type="submit" value="Generate App" id="submitId" style="float:left;height:6%;width:10%; margin-right:0.5%;"/> -->
+
+</form>
+
+</div>
+</body>
+<script type="text/javascript">
+
+if(localStorage.getItem("session")!=1)
+{
+	window.open("http://localhost/cb/kkk/project/login.html","_self");
+}
+
+var url = "'"+window.location.href+"'";
+
+var a = url.split('/');
+
+var name = a[8];
+	
+/*var name = url.substring(url.lastIndexOf(".com")+1,url.lastIndexOf("secondStep.html")-1);*/
+	
+//document.getElementById("GmailId").value = localStorage.getItem("logmail");
+
+document.getElementById("appId").value =  name;
+
+function getParent()
+{
+	loc=window.location.href;
+	loc=loc.split("/");
+	email=loc[7];
+	appName=loc[8];
+	//alert(appName);
+	
+	localStorage.email = email;
+	localStorage.appName = appName;
+	
+}
+
+function addPage(){
+	name=document.getElementById('newPage').value;
+	if (name!=0) {
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.onreadystatechange=function(){
+			if (this.readyState==4 && this.status==200){
+					resp=this.responseText;
+					if (resp.search(name)>=0) {
+						alert("New Page Added : "+name);
+						loadPageNames();
+						location.reload();
+					}
+				}
+			}
+		url="http://localhost/cb/kkk/project/newPage.php?name="+name+"&tag=1&email="+email+"&appName="+appName;
+		xmlHttp.open("GET",url,true);
+		//alert(url);
+		xmlHttp.send();
+	}
+	else{
+		alert("No Page Added!");
+	}
+}
+function loadPageNames(){
+	xmlHttp=new XMLHttpRequest();
+	xmlHttp.onreadystatechange=function(){
+		if (this.readyState==4 && this.status==200){
+			resp=JSON.parse(this.responseText);
+			//alert("ok");
+			var pageN=[];
+			var pageP=[]; 
+			for (var i = 0; i < resp.length; i++) {
+				//alert(resp[i]);
+				var count=Object.keys(resp[i]).length;
+				for (var j = 1; j <= count; j++) {
+					if (j==1) {
+						n="path";
+						ar=resp[i][n].split("/");
+						c=ar.length-1;
+						pageN.push(ar[c]);
+						pageP.push(resp[i][n]);
+					}
+					else{
+						n="path"+j;
+						ar=resp[i][n].split("/");
+						c=ar.length-1;
+						pageN.push(ar[c]);
+						pageP.push(resp[i][n]);
+					}
+				}
+			}
+			selectCode='';
+			
+			document.getElementById('form1').innerHTML  = "<input type='hidden' name='appGmail' id='GmailId' value ="+localStorage.getItem("logmail")+">" + 
+			"<input type='hidden' name='appTitle' id='appId' value ="+name+">" + 
+			
+			"<input type='submit' value='Generate App' id='submitId' style='float:left;height:6%;width:10%;background-color: #007800; border: none;color :white;margin-top:-5%;margin-left:5%;'>" ;
+			
+			for (var i = 0; i < count; i++) {
+				selectCode+='<option value="'+pageN[i]+'">'+pageN[i]+'</option><br>';
+				document.getElementById('form1').innerHTML +=  "<input type='hidden' type='text' value='"+pageN[i]+"'name='"+i+"'>";
+			}
+			
+			document.getElementById('page').innerHTML=selectCode;
+		}
+	}
+	url="http://localhost/cb/kkk/project/newPage.php?tag=2&email="+email+"&appName="+appName;
+	xmlHttp.open("GET",url,true);
+	xmlHttp.send();
+}
+function loadPage(){
+	page=document.getElementById('page').value;
+	//alert(page);
+	//page='http://'+page;
+	document.getElementById("iframe").src=page;
+}
+function getColor(val){
+	color=document.getElementById(val.id).value;
+	localStorage.setItem("selectedColor",color);
+}
+function searchElement()
+{
+	element=document.getElementById('search').value;
+	if (element==0) {
+		document.getElementById('changeElements').style.visibility='hidden';
+	}
+	findElement(element);
+}
+function findElement(element)
+{
+	if (element.search("Button")>=0) {
+		updateButton(element);
+	}
+	else if (element.search("Text")>=0) {
+		updateText(element);
+	}
+	else if (element.search("Header")>=0) {
+		updateColor(element);
+	}
+	else if (element.search("Body")>=0) {
+		updateColor(element);
+	}
+	else {
+
+	}
+	//a=document.getElementById('iframe').contentWindow.document.getElementById(element).innerHTML="ok";
+}
+function updateButton(element){
+	document.getElementById('changeElements').style.visibility='visible';
+	code="<div><br>Name of the Button:&nbsp;<input type='text' name='' id='btnName' onkeyup='checkEmpty()'><br>On Click:&nbsp;<select name='action' id='action'><option value='goTo'>Go to Page</option><option value='alert'>Show Pop Up</option></select>&nbsp;<input type='text' name='' id='btnAction' onkeyup='checkEmpty()' placeholder='page link/pop up message...'><br><div id='colors' style='padding: 15px;'><p>Click on a color to select</p><button id='colorWhite' style='background-color: white;padding: 25px;' onclick='getColor(this); checkEmpty();' value='white'></button>&nbsp;<button id='colorNavy' style='background-color: navy;padding: 25px;' onclick='getColor(this); checkEmpty();' value='navy'></button>&nbsp;<button id='colorLightBlue' style='background-color: lightblue;padding: 25px;' onclick='getColor(this); checkEmpty();' value='lightBlue'></button>&nbsp;<button id='colorGrey' style='background-color: grey;padding: 25px;' onclick='getColor(this); checkEmpty();' value='grey'></button></div><br><button id='setBtn' onClick='makeChanges();setCookies();'>Cancel</button></div>";
+	body=document.getElementById("changeElements");
+	body.innerHTML=code;
+}
+function updateText(element){
+	showChangeElements();
+	code="<textarea id='textChanges' placeholder='Type here...' rows='3' cols='30'></textarea><br><button id='setTxt' onclick='changeText()'>Apply Changes</button>";
+	body=document.getElementById("changeElements");
+	body.innerHTML=code;
+}
+function updateColor(element){
+	showChangeElements();
+	code="<div id='colors' style='padding: 15px;'><p>Click on a color to select</p><button id='colorWhite' style='background-color: white;padding: 25px;' onclick='getColor(this)' value='white'></button>&nbsp;<button id='colorNavy' style='background-color: navy;padding: 25px;' onclick='getColor(this)' value='navy'></button>&nbsp;<button id='colorLightBlue' style='background-color: lightblue;padding: 25px;' onclick='getColor(this)' value='lightBlue'></button>&nbsp;<button id='colorGrey' style='background-color: grey;padding: 25px;' onclick='getColor(this)' value='grey'></button></div><br><button id='setColor' onclick='changeColor()'>Apply Changes</button>";
+	body=document.getElementById("changeElements");
+	body.innerHTML=code;
+}
+function changeColor(){
+	color=localStorage.selectedColor;
+	localStorage.removeItem("selectedColor");
+	element=document.getElementById('search').value;
+	if (color==null) {
+		alert("No Changes Made!");
+		body=document.getElementById("changeElements");
+		body.innerHTML="";
+		hideChangeElements();
+	}
+	else{
+		document.getElementById("iframe").contentWindow.document.getElementById(element).style.backgroundColor=color;
+		body=document.getElementById("changeElements");
+		body.innerHTML="";
+		hideChangeElements();
+	}
+}
+function changeText()
+{
+	texts=document.getElementById("textChanges").value;
+	element=document.getElementById('search').value;
+	if (texts==0) {
+		alert("No Changes Made!");
+		body=document.getElementById("changeElements");
+		body.innerHTML="";
+		hideChangeElements();
+	}
+	else{
+		document.getElementById("iframe").contentWindow.document.getElementById(element).innerHTML=texts;
+		body=document.getElementById("changeElements");
+		body.innerHTML="";
+		hideChangeElements();
+	}
+}
+function checkEmpty(){
+	newName=document.getElementById('btnName').value;
+	newAction=document.getElementById('btnAction').value;
+	if (localStorage.selectedColor!=0) {
+		color=localStorage.getItem("selectedColor");
+	}
+	if (newAction==0 && newName==0) {
+		if (color==null) {
+			document.getElementById('setBtn').innerHTML="Cancel";
+		}
+		else {
+			document.getElementById('setBtn').innerHTML="Set";
+		}
+	}
+	else{
+		document.getElementById('setBtn').innerHTML="Set";
+	}
+}
+function setCookies(){
+	Button1Action=document.getElementById('iframe').contentWindow.document.getElementById('Button1').getAttribute("onclick");
+	Button1Name=document.getElementById('iframe').contentWindow.document.getElementById('Button1').innerHTML;
+	Button2Action=document.getElementById('iframe').contentWindow.document.getElementById('Button2').getAttribute("onclick");
+	Button2Name=document.getElementById('iframe').contentWindow.document.getElementById('Button2').innerHTML;
+	Button3Action=document.getElementById('iframe').contentWindow.document.getElementById('Button3').getAttribute("onclick");
+	Button3Name=document.getElementById('iframe').contentWindow.document.getElementById('Button3').innerHTML;
+	Button4Action=document.getElementById('iframe').contentWindow.document.getElementById('Button4').getAttribute("onclick");
+	Button4Name=document.getElementById('iframe').contentWindow.document.getElementById('Button4').innerHTML;
+
+	localStorage.btn1Name=Button1Name;
+	localStorage.btn1Action=Button1Action;
+	localStorage.btn2Name=Button2Name;
+	localStorage.btn2Action=Button2Action;
+	localStorage.btn3Name=Button3Name;
+	localStorage.btn3Action=Button3Action;
+	localStorage.btn4Name=Button4Name;
+	localStorage.btn4Action=Button4Action;
+	
+	window.open('http://localhost/cb/kkk/project/source.php');
+}
+function makeChanges(){
+	if (document.getElementById('setBtn').innerHTML=="Set") {
+		newName=document.getElementById('btnName').value;
+		newAction=document.getElementById('btnAction').value;
+		color=localStorage.selectedColor;
+		localStorage.removeItem("selectedColor");
+		element=document.getElementById('search').value;
+		if (newName!=0) {
+			newName="<b>"+newName+"</b>";
+			document.getElementById("iframe").contentWindow.document.getElementById(element).innerHTML=newName;
+		}
+		if (newAction!=0) {
+			if (document.getElementById('action').value=='goTo') {
+				newAction="window.open('"+newAction+"','_self')";
+			}
+			if (document.getElementById('action').value=='alert') {
+				newAction="alert('"+newAction+"')";
+			}
+			document.getElementById("iframe").contentWindow.document.getElementById(element).setAttribute("onclick",newAction);
+		}
+		if (color!=null) {
+			document.getElementById("iframe").contentWindow.document.getElementById(element).style.backgroundColor=color;
+		}
+		body=document.getElementById("changeElements");
+		body.innerHTML="";
+		hideChangeElements();
+	}
+	else{
+		hideChangeElements();
+	}
+}
+function hideChangeElements(){
+	document.getElementById('changeElements').style.visibility="hidden";
+}
+function showChangeElements(){
+	document.getElementById('changeElements').style.visibility="visible";
+}
+</script>
+<!-- text code -->
+<!-- <textarea id='textChanges' placeholder='Type here...' rows='3' cols='30'></textarea><br><button id='setTxt' onclick='changeText()'>Apply Changes</button> -->
+<!-- color selection -->
+<!-- <div id='colors' style='padding: 15px;'><p>Click on a color to select</p><button id='colorWhite' style='background-color: white;padding: 25px;' onclick='getColor(this)' value='white'></button>&nbsp;<button id='colorNavy' style='background-color: navy;padding: 25px;' onclick='getColor(this)' value='navy'></button>&nbsp;<button id='colorLightBlue' style='background-color: lightblue;padding: 25px;' onclick='getColor(this)' value='lightBlue'></button>&nbsp;<button id='colorGrey' style='background-color: grey;padding: 25px;' onclick='getColor(this)' value='grey'></button></div> -->
+        
+ 
+</html>

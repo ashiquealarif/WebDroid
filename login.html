@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>  
+<html>
+<head>
+<title>Log In</title>
+<script src="js/jquery-3.2.1.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+ <link rel="stylesheet" type="text/css" href="css/CssFile1.css">
+</head>
+
+<body>  
+  
+  <h1> Please Login Here </h1>
+  
+  <div>
+  
+  <b>Email :</b><span id="email_error"> *</span></p> <input type="email" name="email" id="emailId" >
+  <br><br>
+  
+   <b>Password :</b><span id="pass_error"> *</span></p> <input type="password" name="pass" id="passId" >
+  <br><br>
+  
+  <input type="button" name="submit_form" value="Submit" onClick="check()"> 
+  
+  <p id="finalError"></p>
+  
+   <font color='red' size='3'>Not registered yet?</font> <br> <br>
+  
+  <button onClick="window.open('signup.html','_self')" class="button">Sign Up</button> &nbsp; &nbsp; <a href="email.html">Forget password?</a>
+  
+  <br><br><a href="Home.html">Cancel</a>
+  
+  </div>
+
+</body>
+
+ <script src="js/login.js"></script>
+
+</html>

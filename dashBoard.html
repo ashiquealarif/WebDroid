@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Smart Android</title>
+<script src="js/jquery-3.2.1.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+<link rel="stylesheet" type="text/css" href="css/CssFile3.css">
+</head>
+
+<body>
+
+<h1 id="welcome"></h1>
+
+<h2>Welcome To Our Website !!!</h2>
+
+<table style="width:100%" border="1px solid black" cellspacing="0" id="show">
+
+  <tr>
+    <th>App Name</th>
+    <th>Current Status</th> 
+    <th>Edit</th>
+	<th>Delete</th>
+	<th>Download</th>
+  </tr>
+ 
+</table>
+
+</body>
+
+<script src="js/dashboard.js"></script>
+
+<script>
+
+document.getElementById( "welcome" ).innerHTML = "Hello!!! "+localStorage.getItem("username")+
+/*"<button onClick='logout()' style='float:right;height:6%;width:6%;'>Log Out</button>"+"<button onClick='window.open(`firstStep.html`,`_self`)' style='float:right;height:6%;width:10%; margin-right:0.5%;'>Create New App</button>";*/
+"<button onClick='logout()' style='float:right;height:6%;width:6%; background-color: #e60000;border: none;color: white;'>Log Out</button>"+"<button onClick='window.open(`firstStep.html`,`_self`)' style='float:right;height:6%;width:10%; background-color: #007800; border: none;color: white; margin-right:0.5%;'>Create New App</button>";
+
+</script>
+
+</html>

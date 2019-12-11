@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>  
+<html>
+<head>
+<script src="js/jquery-3.2.1.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+<link rel="stylesheet" type="text/css" href="css/CssFile1.css">
+</head>
+
+<body>  
+  
+  <h1>Forget Password?</h1>
+  
+  <div>
+  
+  <b>Enter Your Registered Email :</b><span id="email_error"> *</span></p> <input type="email" name="email" id="emailId" >
+  <br><br>
+  
+  <input type="hidden" name="fcode" id="fcodeId" >
+  
+  <input type="button" name="submit_form" value="Submit" onClick="check()">
+  
+  <p id="finalError"></p>
+  
+  <a href="Home.html">Go Back</a>
+  
+  </div>
+
+</body>
+
+ <script src="js/emailCheck.js"></script>
+ 
+ <script>
+ 
+ document.getElementById('fcodeId').value = Math.floor(Math.random() * 100000);   
+ 
+ </script>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>  
+<html>
+<head>
+<title>Sign Up</title>
+<script src="js/jquery-3.2.1.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+<link rel="stylesheet" type="text/css" href="css/CssFile1.css">
+</head>
+
+<body>  
+  
+  <h1>Sign Up Verification</h1>
+ 
+ <div>
+  
+  <input type="hidden" id="nameid">
+  <input type="hidden" id="mailid">
+  <input type="hidden" id="passid">
+  <input type="hidden" id="fcodeid">
+  
+  <b>Email :</b><span id="email_error"> *</span></p> <input type="email" name="email" id="emailId" >
+  <br><br>
+  
+   <b>Validation Code :</b><span id="valid_error"> *</span></p> <input type="number" name="valid" id="validId" >
+  <br><br>
+  
+  <input type="button" name="submit_form" value="Submit" onClick="check()">  
+  
+  <p id="final"></p>
+  
+  <a href="Home.html">Home Page</a>
+  
+  </div>
+
+</body>
+
+ <script src="js/valid.js"></script>
+
+<script>
+ 
+  document.getElementById( "nameid" ).value = localStorage.getItem("name");
+  document.getElementById( "mailid" ).value = localStorage.getItem("email");
+  document.getElementById( "passid" ).value = localStorage.getItem("pass");
+  document.getElementById( "fcodeid" ).value = localStorage.getItem("fcode");
+
+</script>
+
+</html>

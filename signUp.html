@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>  
+<html>
+<head>
+<title>Sign Up</title>
+<script src="js/jquery-3.2.1.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+<link rel="stylesheet" type="text/css" href="css/CssFile1.css">
+</head>
+
+<body>  
+  
+  <h1>Sign Up With a New Account</h1>
+  
+  <div>
+  
+  <!-- Password change verification Code --> 
+   <input type="hidden" name="forgetCode" id="forgetCodeId">
+   
+    <!-- email verification Code --> 
+  <input type="hidden" name="verifyCode" id="verifyCodeId">
+  
+<b>Username :</b><span id="name_error"> *</span></p> <input type="text" name="uname" id="unameId" >
+  <br><br>
+  
+    <b>Email :</b><span id="email_error"> *</span></p> <input type="email" name="email" id="emailId" >
+  <br><br>
+  
+   <b>Password :</b><span id="pass_error"> *</span></p> <input type="password" name="pass" id="passId" >
+  <br><br>
+  
+  <input type="button" name="submit_form" value="Submit" onClick="validate()">
+  
+  <a href="Home.html">Go Back</a>
+  
+  </div>  
+
+</body>
+
+ <script src="js/sign.js"></script>
+
+ <script>
+  
+  var forgetCode = Math.floor((Math.random() * 10000) + 1);
+  document.getElementById("forgetCodeId").value = forgetCode;
+  
+   var verifyCode = Math.floor((Math.random() * 10000) + 1);
+  document.getElementById("verifyCodeId").value = verifyCode;
+  
+  </script>
+
+</html>

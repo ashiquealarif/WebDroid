@@ -1,0 +1,19 @@
+body {
+    background-color: DarkCyan ;
+}
+
+h1 {
+    color: white;
+    text-align: left;
+}
+
+h2 {
+    color: white;
+    text-align:left;
+}
+
+p {
+    font-family: verdana;
+    color: white;
+    text-align:left;
+}
